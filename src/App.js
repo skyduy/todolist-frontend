@@ -186,7 +186,8 @@ class App extends Component {
     }
 
     updateExpired(data) {
-        data['expired'] += "T23:59";
+        if(data['expired']) data['expired'] += "T23:59";
+        else data['expired'] = null;
         axios.put(data.url, data).then(
             (response) => {
                 if (this.state.ordering === 2) {
@@ -257,20 +258,28 @@ class App extends Component {
                        defaultValue={data.expired ? data.expired.slice(0, 10) : ""}
                        onKeyDown={(e) => {
                            if (e.key === 'Enter') {
-                               let date = moment(data.expired);
-                               if (date.isValid()) {
-                                   data.expired = date.format('YYYY-MM-DD');
+                               if(data.expired){
+                                   let date = moment(data.expired);
+                                   if (date.isValid()) {
+                                       data.expired = date.format('YYYY-MM-DD');
+                                       this.updateExpired(data);
+                                       e.target.blur();
+                                       this.setState({
+                                           dateformat: null,
+                                       })
+                                   } else {
+                                       e.target.value = raw.expired ? raw.expired.slice(0, 10) : "";
+                                       e.target.blur();
+                                       this.setState({
+                                           dateformat: "Format: YYYY-MM-DD",
+                                       });
+                                   }
+                               } else {
                                    this.updateExpired(data);
                                    e.target.blur();
                                    this.setState({
                                        dateformat: null,
                                    })
-                               } else {
-                                   e.target.value = raw.expired ? raw.expired.slice(0, 10) : "";
-                                   e.target.blur();
-                                   this.setState({
-                                       dateformat: "Format: YYYY-MM-DD",
-                                   });
                                }
                            } else if (e.key === 'Escape') {
                                e.target.value = raw.expired ? raw.expired.slice(0, 10) : "";
