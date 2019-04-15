@@ -151,7 +151,7 @@ class App extends Component {
 
     post() {
         let data = {
-            "priority": this.state.priority,
+            "priority": this.state.priority?this.state.priority:0,
             "context": this.state.context,
         };
         if (this.state.expired) {
@@ -346,20 +346,24 @@ class App extends Component {
                                     className="btn btn-outline-success"
                                     type="button"
                                     onClick={(e) => {
-                                        let date = moment(this.state.expired);
-                                        if (date.isValid()) {
-                                            this.post();
-                                            this.setState({
-                                                priority: null,
-                                                expired: null,
-                                                context: "",
-                                                dateformat: null,
-                                            })
+                                        if(this.state.expired){
+                                            let date = moment(this.state.expired);
+                                            if (date.isValid()) {
+                                                this.post();
+                                                this.setState({
+                                                    priority: null,
+                                                    expired: null,
+                                                    context: "",
+                                                    dateformat: null,
+                                                })
+                                            } else {
+                                                this.setState({
+                                                    expired: null,
+                                                    dateformat: "Format: YYYY-MM-DD",
+                                                });
+                                            }
                                         } else {
-                                            this.setState({
-                                                expired: null,
-                                                dateformat: "Format: YYYY-MM-DD",
-                                            });
+                                            this.post();
                                         }
                                     }}>新增
                                 </button>
