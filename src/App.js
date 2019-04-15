@@ -171,8 +171,10 @@ class App extends Component {
                 this.setState({
                     completed: data["completed"],
                 });
-                if (this.state.ordering === 2) {
-                    this.fetchList();
+                if (this.state.category !== 2) {
+                    let url = this.state.results.length > 1 ?
+                        this.state.url : this.state.previous;
+                    this.fetchPage(url);
                 }
             }
         );
