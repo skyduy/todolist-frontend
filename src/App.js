@@ -19,8 +19,8 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            ordering: 0,
             category: 0,
+            ordering: 0,
 
             count: 0,
             url: null,
@@ -35,8 +35,8 @@ class App extends Component {
             dateformat: null,
         };
 
-        this.orderings = [[0, '最近创建'], [1, '最高优先'], [2, '最快截止']];
         this.categories = [[0, 'TODO'], [1, '已完成'], [2, '所有任务']];
+        this.orderings = [[0, '最近创建'], [1, '最高优先'], [2, '最快截止']];
         this.showOrder = this.showOrder.bind(this);
         this.showCats = this.showCats.bind(this);
         this.updateOrder = this.updateOrder.bind(this);
@@ -172,9 +172,7 @@ class App extends Component {
                     completed: data["completed"],
                 });
                 if (this.state.category !== 2) {
-                    let url = this.state.results.length > 1 ?
-                        this.state.url : this.state.previous;
-                    this.fetchPage(url);
+                    this.fetchList();
                 }
             }
         );
